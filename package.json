@@ -1,7 +1,7 @@
 {
   "name": "fauna-x-schemas",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A collection of basic validation schemas to improve the typing of Fauna's new FQLx driver",
   "types": "./lib/index.d.ts",
   "module": "./lib/index.js",
@@ -12,7 +12,9 @@
       "default": "./lib/index.js"
     }
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "compile": "tsc -p .",
     "watch": "tsc -w -p ."
@@ -28,9 +30,11 @@
   "author": "Liam Martens <hi@liammartens.com>",
   "license": "MIT",
   "peerDependencies": {
-    "zod": "^3.0.0"
+    "zod": "^3.0.0",
+    "fauna": "^1.0.0"
   },
   "devDependencies": {
+    "fauna": "^1.1.0",
     "typescript": "^5.2.2",
     "zod": "^3.22.2"
   }

@@ -1,32 +1,41 @@
-import z from 'zod';
-import { timeStubSchema } from './timeStubSchema.js';
-import { moduleSchemaFactory } from './moduleSchemaFactory.js';
+import z, { ZodObject, ZodString } from 'zod';
+import { TimeStubSchema, timeStubSchema } from './timeStubSchema.js';
+import { ModuleSchema, moduleSchemaFactory } from './moduleSchemaFactory.js';
 
-const anonymousSchema = z.object({
+type AnonymousShape = {
+  id: ZodString;
+  ts: TimeStubSchema;
+  coll: ModuleSchema<false>;
+};
+type NamedShape<T extends string> = {
+  id: ZodString;
+  ts: TimeStubSchema;
+  coll: ModuleSchema<true, T>;
+};
+export type DocumentSchema<
+  Named extends boolean,
+  T extends string = never
+> = Named extends true ? ZodObject<NamedShape<T>> : ZodObject<AnonymousShape>;
+
+const anonymousSchema: DocumentSchema<false> = z.object({
   id: z.string(),
   ts: timeStubSchema,
   coll: moduleSchemaFactory(),
 });
-const namedSchemaFactory = <T extends string>(name: T) =>
+const namedSchemaFactory = <T extends string>(name: T): DocumentSchema<true, T> =>
   z.object({
     id: z.string(),
     ts: timeStubSchema,
     coll: moduleSchemaFactory(name),
   });
 
-class NamedStub<T extends string> {
-  factory(name: T) {
-    return namedSchemaFactory<T>(name);
-  }
-}
-
-export function documentSchemaFactory(): typeof anonymousSchema;
+export function documentSchemaFactory(): DocumentSchema<false>;
 export function documentSchemaFactory<T extends string>(
   name: T
-): ReturnType<NamedStub<T>['factory']>;
+): DocumentSchema<true, T>;
 export function documentSchemaFactory<T extends string>(
   name?: T
-): typeof anonymousSchema | ReturnType<NamedStub<T>['factory']> {
+): DocumentSchema<false> | DocumentSchema<true, T> {
   if (!name) return anonymousSchema;
   return namedSchemaFactory<T>(name);
 }

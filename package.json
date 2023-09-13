@@ -1,7 +1,7 @@
 {
   "name": "fauna-x-schemas",
   "type": "module",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A collection of basic validation schemas to improve the typing of Fauna's new FQLx driver",
   "types": "./lib/index.d.ts",
   "module": "./lib/index.js",

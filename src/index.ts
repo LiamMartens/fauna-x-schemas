@@ -1,3 +1,4 @@
+export * from './extensions/index.js';
 export * from './unknownInstanceOfSchemaFactory.js';
 export * from './timeStubSchema.js';
 export * from './documentReferenceSchemaFactory.js';

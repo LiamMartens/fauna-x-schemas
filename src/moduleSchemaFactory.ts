@@ -1,17 +1,20 @@
-import z, { ZodLiteral, ZodObject, ZodString } from 'zod';
+import { NamedModule } from './extensions/index.js';
+import {
+  UnknownInstanceOfSchema,
+  unknownInstanceOfSchemaFactory,
+} from './unknownInstanceOfSchemaFactory.js';
 
-type AnonymousShape = { name: ZodString };
-type NamedShape<T extends string> = { name: ZodLiteral<T> };
 export type ModuleSchema<
   Named extends boolean,
   T extends string = never
-> = Named extends true ? ZodObject<NamedShape<T>> : ZodObject<AnonymousShape>;
+> = Named extends true
+  ? UnknownInstanceOfSchema<typeof NamedModule<T>>
+  : UnknownInstanceOfSchema<typeof NamedModule<string>>;
 
-const anonymousSchema: ModuleSchema<false> = z.object({ name: z.string() });
+const anonymousSchema: ModuleSchema<false> =
+  unknownInstanceOfSchemaFactory(NamedModule);
 const namedSchemaFactory = <T extends string>(name: T): ModuleSchema<true, T> =>
-  z.object({
-    name: z.literal(name),
-  });
+  unknownInstanceOfSchemaFactory(NamedModule);
 
 export function moduleSchemaFactory(): ModuleSchema<false>;
 export function moduleSchemaFactory<T extends string>(

@@ -1,9 +1,10 @@
-import z, { ZodObject, ZodString } from 'zod';
+import { TimeStub } from 'fauna';
+import {
+  UnknownInstanceOfSchema,
+  unknownInstanceOfSchemaFactory,
+} from './unknownInstanceOfSchemaFactory.js';
 
-export type TimeStubSchema = ZodObject<{
-  isoString: ZodString;
-}>;
+export type TimeStubSchema = UnknownInstanceOfSchema<typeof TimeStub>;
 
-export const timeStubSchema = z.object({
-  isoString: z.string(),
-});
+export const timeStubSchema: TimeStubSchema =
+  unknownInstanceOfSchemaFactory(TimeStub);

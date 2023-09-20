@@ -14,7 +14,7 @@ export type ModuleSchema<
 const anonymousSchema: ModuleSchema<false> =
   unknownInstanceOfSchemaFactory(NamedModule);
 const namedSchemaFactory = <T extends string>(name: T): ModuleSchema<true, T> =>
-  unknownInstanceOfSchemaFactory(NamedModule);
+  unknownInstanceOfSchemaFactory<typeof NamedModule<T>>(NamedModule);
 
 export function moduleSchemaFactory(): ModuleSchema<false>;
 export function moduleSchemaFactory<T extends string>(

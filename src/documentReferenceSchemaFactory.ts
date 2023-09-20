@@ -16,7 +16,9 @@ const anonymousSchema: DocumentReferenceSchema<false> =
 const namedSchemaFactory = <T extends string>(
   name: T
 ): DocumentReferenceSchema<true, T> =>
-  unknownInstanceOfSchemaFactory(NamedDocumentReference);
+  unknownInstanceOfSchemaFactory<typeof NamedDocumentReference<T>>(
+    NamedDocumentReference
+  );
 
 export function documentReferenceSchemaFactory(): DocumentReferenceSchema<false>;
 export function documentReferenceSchemaFactory<T extends string>(
